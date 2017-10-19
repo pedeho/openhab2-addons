@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="ihcserver"
+                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+                          xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+    <bridge-type id="bridge-eth">
+        <label>IHCServer Bridge</label>
+        <description>IHCServer connected via ethernet
+        </description>
+        <config-description>
+            <parameter name="url" type="text" required="true">
+                <label>ihcserver url</label>
+                <description>URL of the web interface (e.g. http://192.168.0.1)
+                </description>
+                <context>network-url</context>
+            </parameter>
+            <parameter name="tcpPort" type="integer" required="true" min="1" max="65535">
+                <label>TCP Port</label>
+                <description>The port the web interface uses (usually 7070)
+                </description>
+                <default>7070</default>
+            </parameter>
+            <parameter name="password" type="text" required="true">
+                <label>Password</label>
+                <description>admin password</description>
+            </parameter> 
+        </config-description>
+    </bridge-type>
+    
+    <thing-type id="input">
+        
+        <supported-bridge-type-refs>
+            <bridge-type-ref id="bridge-eth"/>
+        </supported-bridge-type-refs>
+        
+        <label>IHC Input</label>
+        <description>IHC Input</description>
+
+        <channels>
+            <channel id="switch" typeId="switch-channel" />
+        </channels>
+
+        <config-description>
+            <parameter name="module" type="integer" required="true">
+                <context>moduleId</context>
+                <label>IHC Input module number</label>
+                <description>IHC module
+                </description>
+            </parameter>
+            <parameter name="input" type="integer" required="true">
+                <context>InputId</context>
+                <label>IHC Input number</label>
+                <description>IHC input
+                </description>
+            </parameter>
+            <parameter name="button" type="boolean" required="true">
+                <label>Button type</label>
+                <description>Switch as button</description>
+                <default>false</default>
+            </parameter>
+            <parameter name="stateModule" type="integer" required="false">
+                <context>stateModule</context>
+                <label>IHC state output module number</label>
+                <description>Output module for state update
+                </description>
+                <default>0</default>
+            </parameter>
+            <parameter name="stateOutput" type="integer" required="false">
+                <context>stateOutput</context>
+                <label>IHC state output number</label>
+                <description>Output for state update</description>
+                <default>0</default>
+            </parameter>
+        </config-description>
+
+    </thing-type>
+
+    <thing-type id="output">
+        
+        <supported-bridge-type-refs>
+            <bridge-type-ref id="bridge-eth"/>
+        </supported-bridge-type-refs>
+        
+        <label>IHC Output</label>
+        <description>IHC Output</description>
+
+        <channels>
+            <channel id="switch" typeId="switch-channel" />
+            <channel id="state" typeId="state-channel" />
+        </channels>
+
+        <config-description>
+            <parameter name="module" type="integer" required="true">
+                <context>moduleId</context>
+                <label>IHC Output module number</label>
+                <description>IHC output module
+                </description>
+            </parameter>
+            <parameter name="output" type="integer" required="true">
+                <context>OutputId</context>
+                <label>IHC Output number</label>
+                <description>IHC output
+                </description>
+            </parameter>
+        </config-description>
+    </thing-type>
+    
+    <channel-type id="switch-channel">
+        <item-type>Switch</item-type>
+        <label>Switch</label>
+        <description>switch io on/off</description>
+    </channel-type>
+
+    <channel-type id="state-channel">
+        <item-type>Number</item-type>
+        <label>State Value</label>
+        <description>Output state</description>
+        <state readOnly="true" />
+    </channel-type>
+    
+</thing:thing-descriptions>
